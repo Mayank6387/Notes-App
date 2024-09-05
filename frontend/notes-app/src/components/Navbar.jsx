@@ -23,8 +23,8 @@ export const Navbar = () => {
             <hr className="w-full mt-1 border-blue-500 my-4 border-t-2"/>
         </h2>
         <SearchBar value={searchQuery}
-        onChange={({target})=>{
-          setSearchQuery(target.value)
+        onChange={(e)=>{
+          setSearchQuery(e.target.value)
         }}
         handleSearch={handleSearch}
         onClearSearch={onClearSearch}/>

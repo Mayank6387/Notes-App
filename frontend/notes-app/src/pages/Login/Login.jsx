@@ -33,6 +33,8 @@ const Login = () => {
     <div className="w-96 border border-gray-700 rounded px-7 py-10">
       <form onSubmit={handleLogin}>
         <h4 className="text-2xl mb-7">Login</h4>
+
+        
         <input type="text" placeholder="Email" value={email} onChange={(e)=>setEmail(e.target.value)} className="w-full text-sm bg-transparent  border-gray-700 border-[1px] px-5 py-3 rounded-md outline-none mb-4"/>
 
         <PasswordInput value={password} onChange={(e)=>setPassword(e.target.value) }></PasswordInput>

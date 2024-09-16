@@ -1,7 +1,8 @@
 require('dotenv').config();
 
 const config = {
-  mongostring: process.env.MONGOSTRING
+  mongostring: process.env.MONGOSTRING,
+  accesstoken:process.env.ACCESS_TOKEN_SECRET
 
 };
 

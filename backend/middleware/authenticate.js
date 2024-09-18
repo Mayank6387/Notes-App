@@ -1,27 +1,22 @@
 const jwt=require('jsonwebtoken');
 const config=require('../config/config')
-
-
-const authenticate=(req,res)=>{
-    const token=req.header("Authorization");
-
-    if(!token){
-        return res.sendStatus(401).json({error:true,message:"Authorization required"});
+const authenticate = async (req, res, next) => {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader ? authHeader.split(' ')[1] : null;
+    
+    if (!token) {
+      return res.status(401).json({ error: true, message: "No token provided" });
     }
-
+  
     try {
-       const parsedToken=token.split(" ")[1];
-       jwt.verify(parsedToken,config.accesstoken,(err,user)=>{
-        if(err)return res.sendStatus(401).json({error:true,message:"Error in getting token"});
-        req.user=user;
-        next();
-       })
-    } catch (error) {
-        return res.sendStatus(401).json({
-            error:true,
-            message:"Token Expired"
-        })
+      const decoded = jwt.verify(token, config.accesstoken);
+      req.user=decoded;
+      next();
+    } catch (err) {
+      console.error(err);
+      return res.status(401).json({ error: true, message: "Invalid token" });
     }
-}
+  };
 
-module.exports={authenticate};
+
+  module.exports={authenticate};

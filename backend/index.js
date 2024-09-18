@@ -5,7 +5,7 @@ const dbconnect = require("./config/dbconnect");
 const userModel = require("./models/userModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const config = require("dotenv");
+const config = require("./config/config");
 const { authenticate } = require("./middleware/authenticate");
 const noteModel = require("./models/noteModel");
 
@@ -108,8 +108,7 @@ app.post("/login", async (req, res) => {
 
 app.post("/add-note", authenticate, async (req, res) => {
   const { title, tags, content } = req.body;
-  const user = req.user;
-
+  const id = req.user;
   if (!title) {
     return res.status(400).json({
       error: true,
@@ -124,10 +123,10 @@ app.post("/add-note", authenticate, async (req, res) => {
   }
   try {
     const note = await noteModel.create({
+      userId: id.user._id,
       title,
       tags: tags || [],
       content,
-      userId: user._id,
     });
 
     await note.save();
@@ -138,6 +137,7 @@ app.post("/add-note", authenticate, async (req, res) => {
       message: "Note Added Succesfully",
     });
   } catch (error) {
+    console.log(error);
     return res.status(500).json({
       error: true,
       message: "Internal Server Error",

@@ -3,18 +3,24 @@ import {useNavigate} from "react-router-dom"
 import SearchBar from "./SearchBar/SearchBar";
 import { useState } from "react";
 
-export const Navbar = () => {
+export const Navbar = ({onSearchNote,userInfo,clearSearch}) => {
 
   const [searchQuery,setSearchQuery]=useState("")
-  const navigate=useNavigate;
+  const navigate=useNavigate();
 
   const onLogout=()=>{
+    localStorage.clear();
     navigate("/login");
   }
-  const handleSearch=()=>{}
+  const handleSearch=()=>{
+    if(searchQuery){
+      onSearchNote(searchQuery)
+    }
+  }
 
   const onClearSearch=()=>{
     setSearchQuery("");
+    clearSearch();
   }
   return (
     <div className="flex items-center justify-between px-6 py-2">
@@ -28,7 +34,7 @@ export const Navbar = () => {
         }}
         handleSearch={handleSearch}
         onClearSearch={onClearSearch}/>
-        <ProfileInfo onLogout={onLogout}/>
+        <ProfileInfo userInfo={userInfo} onLogout={onLogout}/>
     </div>
   )
 }

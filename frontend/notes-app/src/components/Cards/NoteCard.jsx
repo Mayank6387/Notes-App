@@ -1,6 +1,5 @@
 import { MdOutlinePushPin } from "react-icons/md";
-
-
+import moment from "moment"
 import { MdCreate,MdDelete } from "react-icons/md"
 const NoteCard = ({
     title,
@@ -16,7 +15,7 @@ const NoteCard = ({
         <div className="flex items-center justify-between">
             <div>
                 <h6 className="text-sm font-medium">{title}</h6>
-                <span className="text-xs text-slate-500">{date}</span>
+                <span className="text-xs text-slate-500">{moment(date).format('Do MMM YYYY')}</span>
             </div>
 
             <MdOutlinePushPin className={`text-xl text-slate-300 cursor-pointer hover:text-blue-500 ${isPinned?'text-blue-500':'text-gray-500'}`}

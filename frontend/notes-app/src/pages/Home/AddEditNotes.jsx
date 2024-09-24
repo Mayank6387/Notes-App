@@ -1,14 +1,46 @@
 import { useState } from "react"
 import { MdClose } from "react-icons/md";
+import axiosInstance from "../../utils/axiosInstance";
 
-const AddEditNotes = ({noteData,type,onClose}) => {
-
-  const [content,setContent]=useState("");
-  const [title,setTitle]=useState("");
+const AddEditNotes = ({noteData,getAllNotes,type,onClose}) => {
+  const [content,setContent]=useState(noteData?.content||"");
+  const [title,setTitle]=useState(noteData?.title||"");
   const [error,setError]=useState(null);
 
-  const addNewNote=async()=>{}
-  const editNote=async()=>{}
+  const addNewNote=async()=>{
+    try {
+      const response=await axiosInstance.post('/add-note',{
+        title,
+        content,
+      })
+      if(response.data && response.data.note){
+        getAllNotes();
+        onClose();
+      }
+    } catch (error) {
+      if(error.response && error.response.data && error.response.data.message){
+        setError(error.response.data.message)
+      }
+    }
+  }
+
+  const editNote=async()=>{
+    const noteid=noteData._id;
+    try {
+      const response=await axiosInstance.put('/edit-note/'+ noteid,{
+        title,
+        content,
+      })
+      if(response.data && response.data.note){
+        getAllNotes();
+        onClose();
+      }
+    } catch (error) {
+      if(error.response && error.response.data && error.response.data.message){
+        setError(error.response.data.message)
+      }
+    }
+  }
 
   const handleAddNote=()=>{
 
@@ -37,20 +69,20 @@ const AddEditNotes = ({noteData,type,onClose}) => {
         <label className='input-label'>TITLE</label>
         <input type="text"
         className='text-2xl  bg-transparent outline-none'
-        placeholder='Title' onChange={(e)=>{setTitle(e.target.value)}} />
+        placeholder='Title' value={title} onChange={(e)=>{setTitle(e.target.value)}} />
       </div>
 
       <div className='flex flex-col gap-2 mt-4'>
         <label className='input-label'>Content</label>
         <textarea type="text"
         className='text-sm outline-none bg-transparent p-2 rounded-md'
-        placeholder='Content'
+        placeholder='Content' value={content}
         onChange={(e)=>{setContent(e.target.value)}}
         rows={10}>
         </textarea>
       </div>
       {error && <p className="text-red-500 text-xs pt-4">{error}</p>}
-      <button className='bg-blue-500 w-full text-sm my-1 font-medium mt-5 p-2 rounded-md' onClick={handleAddNote}>ADD</button>
+      <button className='bg-blue-500 w-full text-sm my-1 font-medium mt-5 p-2 rounded-md' onClick={handleAddNote}>{type === 'edit'?"UPDATE":"ADD"}</button>
     </div>
   )
 }

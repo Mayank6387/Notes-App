@@ -31,17 +31,13 @@ const Login = () => {
         email:email,
         password:password
       })
-      console.log(response)
-      if (response && response.data) {
-        console.log("Data exists");
-        if ('accessToken' in response.data) {
-          console.log("Access token found");
-          localStorage.setItem("token", response.data.accessToken);
+      
+      if (response.data && response.data.accesstoken) {
+          localStorage.setItem("token", response.data.accesstoken);
           navigate("/dashboard");
         } else {
           console.log("No accessToken field found");
         }
-      }
     }catch(error){
       if(error.response && error.response.data && error.response.data.message){
         setError(error.response.data.message)

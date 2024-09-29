@@ -1,5 +1,4 @@
 import { Link, useNavigate } from "react-router-dom"
-import { Navbar } from "../../components/Navbar"
 import { PasswordInput } from "../../components/Input/PasswordInput"
 import { useState } from "react"
 import validateEmail from "../../utils/helper"
@@ -58,7 +57,12 @@ const Signup = () => {
 
   return (
   <>
-  <Navbar/>
+  <div className="flex items-center justify-between px-6 py-2">
+        <h2 className="text-xl font-medium text-white py-2">
+            Notes
+            <hr className="w-full mt-1 border-blue-500 my-4 border-t-2"/>
+        </h2>
+  </div>
   <div className="flex items-center justify-center mt-10">
     <div className="w-96 border border-gray-700 rounded px-7 py-10">
       <form onSubmit={handleSignup}>
